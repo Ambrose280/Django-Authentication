@@ -3,6 +3,8 @@ from django.contrib import admin
 from django.views.generic import RedirectView, TemplateView
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
+from django.conf import settings
+from django.conf.urls.static import static
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -52,3 +54,6 @@ urlpatterns = [
     re_path(r'^accounts/profile/$', RedirectView.as_view(url='/', permanent=True), name='profile-redirect'),
     re_path(r'^$', schema_view.with_ui('swagger', cache_timeout=0), name='api_docs')
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
